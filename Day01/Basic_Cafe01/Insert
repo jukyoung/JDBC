@@ -1,0 +1,42 @@
+package com.kh.cafe;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+
+public class Insert {
+	public static void main(String[] args) {
+		
+		String url = "jdbc:oracle:thin:@localhost:1521";
+		String username = "kh";
+		String password = "kh";
+		
+		// Connection 객체 생성 -> url, username, password
+		// Statement 객체 생성 -> 오라클에서 sql문을 전송해 쿼리의 결과를 요청할 수 있게 해주는 객체
+		// cafe 테이블에 새로운 데이터 insert (seq_cafe.nextval, '아이스아메리카노', 3000, sysdate)
+		try(Connection con = DriverManager.getConnection(url, username, password);
+			Statement stmt = con.createStatement();){
+			
+			System.out.println("DB접속 성공");
+			String sql = "insert into cafe values(seq_cafe.nextval, '아이스아메리카노', 3000, sysdate)";
+			// 행의 데이터에 영향을 줄 경우(insert, update, delete) executeUpdate() -> 행에 변화가 생김.
+			// executeUpdate() 메서드의 반환값 = 인자값을 넘겨준 쿼리문을 통해서 영향을 받은 행의 개수, 타입은 int 형을 반환
+			int rs = stmt.executeUpdate(sql); // 이러한 쿼리문을 통해서 행의 변화를 만들어 내겠다
+			// 실행이 성공 하면 rs에 값이 추가 되는 거니까 0이면 데이터가 추가 안된것!
+			if(rs > 0) {
+				System.out.println("데이터 추가 성공");
+			}else {
+				System.out.println("데이터 추가 실패");
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+	}
+
+}
